@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="filter form-group col">
+    <select class="form-control" (change)="filterBy($event)">
+      <option selected disabled style="font-weight: bolder">
+        Filter by category
+      </option>
+      <option>All products</option>
+      <option>katana</option>
+      <option>claymore</option>
+      <option>broadsword</option>
+    </select>
+  </div>
+
+  <div class="filter form-group col">
+    <select class="form-control" (change)="onSortBy($event)">
+      <option selected disabled style="font-weight: bolder">Sort by</option>
+      <option>Name ASC</option>
+      <option>Name DESC</option>
+      <option>Price ASC</option>
+      <option>Price DESC</option>
+    </select>
+  </div>
+</div>
+
+<hr />
+
+<div class="products">
+  @for (product of loadedProducts; track $index) {
+  <app-product
+    class="product"
+    [product]="product"
+    (addToCart)="addToCart($event)"
+  ></app-product>
+  }
+</div>

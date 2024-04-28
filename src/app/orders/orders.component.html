@@ -1,0 +1,39 @@
+<br />
+<br />
+<br />
+<div class="container">
+  @for (order of orderList; track $index) {
+  <ul class="list-group">
+    <li class="list-group-item">
+      <p>Order number: {{ order.id }} | Order status: {{ order.status }}</p>
+      <hr />
+      @for (product of order.products; track $index) {
+      <p>
+        <img
+          [src]="product.thumpnail"
+          alt=""
+          style="height: 64px; width: 64px"
+        />
+        | {{ product.name }}
+      </p>
+      }
+      <hr />
+      <p>total price : {{ order.total_price + 5 | currency : "EUR" }}</p>
+    </li>
+  </ul>
+  <br />
+  }
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />

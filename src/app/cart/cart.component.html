@@ -1,0 +1,50 @@
+<div class="container">
+  <br />
+  <br />
+  <br />
+  @if (productsInCart.length == 0) {
+  <p>its a little empty here...</p>
+  }
+  <ul class="list-group">
+    @for (item of productsInCart; track $index) {
+    <li class="list-group-item">
+      <img src="{{ item.thumpnail }}" style="height: 64px; width: 64px" />
+      {{ item.name }} | {{ item.price | currency : "EUR" }}
+      <a (click)="removeProductFromCart($index)" class="btn btn-outline-danger">
+        Remove
+      </a>
+    </li>
+    }
+    <li class="list-group-item">
+      <p>Sub total: {{ calcTotalPrice() | currency : "EUR" }}</p>
+    </li>
+  </ul>
+  <br />
+  <ul class="list-group">
+    <li class="list-group-item">
+      <p>Travel fee: €5.00</p>
+      <p>Total price: {{ calcTotalPrice() + 5 | currency : "EUR" }}</p>
+    </li>
+  </ul>
+  <br />
+  <button (click)="placeOrder()" class="btn btn-primary">Order</button>
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+</div>
