@@ -28,6 +28,12 @@
           *ngIf="userIsLoggedIn"
           ><b>My Orders</b></a
         >
+        <a
+            class="nav-item nav-link yello"
+          [routerLink]="'profile'"
+          *ngIf="userIsLoggedIn"
+          ><b>Profile</b></a
+        >
       </div>
     </div>
     <div style="margin-left: 4vw">

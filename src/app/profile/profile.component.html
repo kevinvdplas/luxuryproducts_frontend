@@ -1,0 +1,30 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Giftcard ID</th>
+        <th scope="col">Gebruikers ID</th>
+        <th scope="col">Code</th>
+        <th scope="col">Prijs</th>
+        <th scope="col">Gebruikt</th>
+        <th scope="col">Actie</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let giftcard of giftcards">
+        <tr>
+            <td>{{giftcard.giftcard_id}}</td>
+            <td>{{giftcard.userId}}</td>
+            <td>{{giftcard.code}}</td>
+            <td>{{giftcard.price}}</td>
+            @if(giftcard.used == false) {
+                <td>Nee</td>
+                <button (click)="deactivateGiftcard(giftcard.giftcard_id)">Deactiveer</button>
+            }
+            @else {
+                <td>Ja</td>
+                <button (click)="activateGiftcard(giftcard.giftcard_id)">Deactiveer</button>
+            }
+        </tr>
+    </ng-container>
+    </tbody>
+</table>
