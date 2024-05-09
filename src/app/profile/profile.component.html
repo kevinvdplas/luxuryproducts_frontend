@@ -6,7 +6,8 @@
         <th scope="col">Code</th>
         <th scope="col">Prijs</th>
         <th scope="col">Gebruikt</th>
-        <th scope="col">Actie</th>
+        <th scope="col">Deactiveer</th>
+        <th scope="col">Activeer</th>
     </tr>
     </thead>
     <tbody>
@@ -16,14 +17,9 @@
             <td>{{giftcard.userId}}</td>
             <td>{{giftcard.code}}</td>
             <td>{{giftcard.price}}</td>
-            @if(giftcard.used == false) {
-                <td>Nee</td>
-                <button (click)="deactivateGiftcard(giftcard.giftcard_id)">Deactiveer</button>
-            }
-            @else {
-                <td>Ja</td>
-                <button (click)="activateGiftcard(giftcard.giftcard_id)">Deactiveer</button>
-            }
+            <td>{{giftcard.used}}</td>
+            <td><button (click)="deactivateGiftcard(giftcard.giftcard_id)" [disabled]="giftcard.used">Deactiveer</button></td>
+            <td><button (click)="activateGiftcard(giftcard.giftcard_id)" [disabled]="!giftcard.used">Activeer</button></td>
         </tr>
     </ng-container>
     </tbody>

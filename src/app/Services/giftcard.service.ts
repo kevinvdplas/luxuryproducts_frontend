@@ -18,4 +18,8 @@ export class GiftcardService {
     public deactivateGiftcard(giftcard_id: number): Observable<any> {
         return this.http.put(environment.base_url + '/giftcards/deactivate/' + giftcard_id, {});
     }
+
+    public activateGiftcard(giftcard_id: number): Observable<any> {
+        return this.http.put(environment.base_url + '/giftcards/activate/' + giftcard_id, {});
+    }
 }
