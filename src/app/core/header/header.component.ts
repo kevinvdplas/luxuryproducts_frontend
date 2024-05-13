@@ -12,6 +12,7 @@ import { Product } from '../../models/product.model';
 export class HeaderComponent implements OnInit {
   public userIsLoggedIn: boolean = false;
   public productsInCart: number;
+  public userIsAdmin: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -20,6 +21,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+    this.isAdmin();
     this.checkLoginState();
     this.cartService.$productsInCart.subscribe((products: Product[]) => {
       this.productsInCart = products.length;
@@ -34,6 +36,13 @@ export class HeaderComponent implements OnInit {
   public checkLoginState(): void {
     this.authService.$userIsLoggedIn.subscribe((loginState: boolean) => {
       this.userIsLoggedIn = loginState;
+    });
+  }
+
+  public isAdmin(): void {
+    this.authService.checkIfUserIsAdmin().subscribe((admin: boolean) => {
+      this.userIsAdmin = admin;
+      console.log(this.userIsAdmin)
     });
   }
 }

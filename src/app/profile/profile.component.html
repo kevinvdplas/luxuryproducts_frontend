@@ -1,26 +1,26 @@
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Giftcard ID</th>
-        <th scope="col">Gebruikers ID</th>
-        <th scope="col">Code</th>
-        <th scope="col">Prijs</th>
-        <th scope="col">Gebruikt</th>
-        <th scope="col">Deactiveer</th>
-        <th scope="col">Activeer</th>
-    </tr>
-    </thead>
-    <tbody>
-    <ng-container *ngFor="let giftcard of giftcards">
-        <tr>
-            <td>{{giftcard.giftcard_id}}</td>
-            <td>{{giftcard.userId}}</td>
-            <td>{{giftcard.code}}</td>
-            <td>{{giftcard.price}}</td>
-            <td>{{giftcard.used}}</td>
-            <td><button (click)="deactivateGiftcard(giftcard.giftcard_id)" [disabled]="giftcard.used">Deactiveer</button></td>
-            <td><button (click)="activateGiftcard(giftcard.giftcard_id)" [disabled]="!giftcard.used">Activeer</button></td>
-        </tr>
-    </ng-container>
-    </tbody>
-</table>
+<!--<table class="table">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th scope="col">Giftcard ID</th>-->
+<!--        <th scope="col">Gebruikers ID</th>-->
+<!--        <th scope="col">Code</th>-->
+<!--        <th scope="col">Prijs</th>-->
+<!--        <th scope="col">Gebruikt</th>-->
+<!--        <th scope="col">Deactiveer</th>-->
+<!--        <th scope="col">Activeer</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <ng-container *ngFor="let giftcard of giftcards">-->
+<!--        <tr>-->
+<!--            <td>{{giftcard.giftcard_id}}</td>-->
+<!--            <td>{{giftcard.userId}}</td>-->
+<!--            <td>{{giftcard.code}}</td>-->
+<!--            <td>{{giftcard.price}}</td>-->
+<!--            <td>{{giftcard.used}}</td>-->
+<!--            <td><button (click)="deactivateGiftcard(giftcard.giftcard_id)" [disabled]="giftcard.used">Deactiveer</button></td>-->
+<!--            <td><button (click)="activateGiftcard(giftcard.giftcard_id)" [disabled]="!giftcard.used">Activeer</button></td>-->
+<!--        </tr>-->
+<!--    </ng-container>-->
+<!--    </tbody>-->
+<!--</table>-->

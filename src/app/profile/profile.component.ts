@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {GiftcardService} from "../Services/giftcard.service";
 import {Giftcard} from "../models/giftcard.model";
 import {NgForOf, NgIf} from "@angular/common";
+import {AuthService} from "../auth/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -16,24 +18,12 @@ import {NgForOf, NgIf} from "@angular/common";
 export class ProfileComponent implements OnInit {
     public giftcards: Giftcard[] = new Array<Giftcard>();
 
-    constructor(private giftcardService: GiftcardService) {}
+    constructor(private giftcardService: GiftcardService, private authService: AuthService, private router: Router) {}
 
     ngOnInit(): void {
-      this.giftcardService.getAllGiftcards().subscribe((giftcards: any) => {
-          console.log(giftcards)
-        this.giftcards = giftcards;
-      });
-    }
-
-    public deactivateGiftcard(giftcard_id: number): void {
-        this.giftcardService.deactivateGiftcard(giftcard_id).subscribe(() => {
-            console.log('Giftcard deactivated');
-        });
-    }
-
-    public activateGiftcard(giftcard_id: number): void {
-        this.giftcardService.activateGiftcard(giftcard_id).subscribe(() => {
-            console.log('Giftcard activated');
-        });
+      // this.giftcardService.getAllGiftcardsByUser().subscribe((giftcards: any) => {
+      //     // console.log(giftcards)
+      //   this.giftcards = giftcards;
+      // });
     }
 }

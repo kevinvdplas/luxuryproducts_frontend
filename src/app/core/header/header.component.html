@@ -34,6 +34,12 @@
           *ngIf="userIsLoggedIn"
           ><b>Profile</b></a
         >
+          <a
+                  class="nav-item nav-link yello"
+                  [routerLink]="'admin'"
+                  *ngIf="userIsAdmin"
+          ><b>Admin</b>
+          </a>
       </div>
     </div>
     <div style="margin-left: 4vw">

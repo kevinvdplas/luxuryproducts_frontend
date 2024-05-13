@@ -7,6 +7,7 @@ import { CartComponent } from './cart/cart.component';
 import { authGuard } from './auth/auth.guard';
 import { OrdersComponent } from './orders/orders.component';
 import {ProfileComponent} from "./profile/profile.component";
+import {AdminComponent} from "./admin/admin.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,5 +16,6 @@ export const routes: Routes = [
   { path: 'auth/register', component: RegisterComponent },
   { path: 'cart', component: CartComponent, canActivate: [authGuard] },
   { path: 'orders', component: OrdersComponent, canActivate: [authGuard]},
-  { path: 'profile', component: ProfileComponent, canActivate: [authGuard]}
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
+  { path: 'admin', component: AdminComponent, canActivate: [authGuard]}
 ];

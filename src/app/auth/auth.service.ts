@@ -26,6 +26,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(this._loginEndpoint, authRequest).pipe(
       tap((authResponse: AuthResponse) => {
         this.tokenService.storeToken(authResponse.token);
+        this.storeEmail(authResponse.email);
         this.$userIsLoggedIn.next(true);
       })
     );
@@ -37,6 +38,7 @@ export class AuthService {
       .pipe(
         tap((authResponse: AuthResponse) => {
           this.tokenService.storeToken(authResponse.token);
+          this.storeEmail(authResponse.email);
           this.$userIsLoggedIn.next(true);
         })
       );
@@ -45,5 +47,19 @@ export class AuthService {
   public logOut(): void {
     this.tokenService.removeToken();
     this.$userIsLoggedIn.next(false);
+  }
+
+  public storeEmail(email: string): void {
+    console.log('email', email);
+    localStorage.setItem('email', email);
+  }
+
+  public getEmail(): string | null {
+    return localStorage.getItem('email');
+  }
+
+  public checkIfUserIsAdmin(): Observable<boolean> {
+    let email = this.getEmail();
+    return this.http.get<boolean>(environment.base_url + '/auth/isAdmin/' + email, {});
   }
 }
