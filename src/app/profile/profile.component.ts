@@ -21,9 +21,8 @@ export class ProfileComponent implements OnInit {
     constructor(private giftcardService: GiftcardService, private authService: AuthService, private router: Router) {}
 
     ngOnInit(): void {
-      // this.giftcardService.getAllGiftcardsByUser().subscribe((giftcards: any) => {
-      //     // console.log(giftcards)
-      //   this.giftcards = giftcards;
-      // });
+      this.giftcardService.getAllGiftcardsByUser().subscribe((giftcards: any) => {
+        this.giftcards = giftcards;
+      });
     }
 }
