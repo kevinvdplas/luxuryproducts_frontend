@@ -36,4 +36,8 @@ export class GiftcardService {
     public updateSaldo(code: string, saldo: number): Observable<any> {
         return this.http.put(environment.base_url + '/giftcards/updateSaldo/' + code, {saldo});
     }
+
+    public addSaldoToGiftcard(code: string, price: number): Observable<any> {
+        return this.http.put(environment.base_url + '/giftcards/updateSaldo/' + code, {price});
+    }
 }

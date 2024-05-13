@@ -4,6 +4,7 @@
         <th scope="col">Code</th>
         <th scope="col">Prijs</th>
         <th scope="col">Gebruikt</th>
+        <th scope="col">Saldo Toevoegen</th>
     </tr>
     </thead>
     <tbody>
@@ -12,6 +13,12 @@
             <td>{{giftcard.code}}</td>
             <td>{{giftcard.price}}</td>
             <td>{{giftcard.used}}</td>
+            <td>
+                <form [formGroup]="addSaldoForm" (ngSubmit)="addSaldoToGiftcard(giftcard.code)">
+                    <input name="giftcardValue" id="giftcardValue" formControlName="giftcardValue">
+                    <button type="submit">Opwaarderen</button>
+                </form>
+            </td>
         </tr>
     </ng-container>
     </tbody>
