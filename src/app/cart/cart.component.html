@@ -23,8 +23,25 @@
   <ul class="list-group">
     <li class="list-group-item">
       <p>Travel fee: €5.00</p>
-      <p>Total price: {{ calcTotalPrice() + 5 | currency : "EUR" }}</p>
+        @if (giftcardPrice) {
+      <p>Giftcard price: €{{giftcardPrice}}</p>
+        }
+      <p>Total price: {{ calcTotalPrice() + 5  | currency : "EUR" }}</p>
     </li>
+      <form (submit)="useGiftcard($event)">
+        <div class="form-group">
+          <label for="giftcardCode">Giftcard</label>
+          <input
+            type="text"
+            class="form-control"
+            id="giftcardCode"
+            [(ngModel)]="giftcardCode"
+            name="giftcardCode"
+            placeholder="Enter giftcard"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Use</button>
+      </form>
   </ul>
   <br />
   <button (click)="placeOrder()" class="btn btn-primary">Order</button>

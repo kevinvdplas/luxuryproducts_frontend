@@ -22,4 +22,12 @@ export class GiftcardService {
     public activateGiftcard(giftcard_id: number): Observable<any> {
         return this.http.put(environment.base_url + '/giftcards/activate/' + giftcard_id, {});
     }
+
+    public getGiftcardByCode(code: string): Observable<any> {
+        return this.http.get<Giftcard>(environment.base_url + '/giftcards/code/' + code);
+    }
+
+    public updateSaldo(code: string, saldo: number): Observable<any> {
+        return this.http.put(environment.base_url + '/giftcards/updateSaldo/' + code, {saldo});
+    }
 }
