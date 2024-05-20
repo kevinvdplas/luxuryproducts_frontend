@@ -1,5 +1,7 @@
 <div class="card product">
-    <img class="card-img-top" [src]="product.thumpnail" />
+    <div class="image-container" style="height: 270px; overflow: hidden;">
+        <img class="product-img w-100" style="object-fit: cover; height: 100%; width: 100%;" [src]="product.thumpnail" alt="thumbnail"/>
+    </div>
     <div class="card-body">
         <h5 class="card-title">{{ product.name }}</h5>
         <hr />

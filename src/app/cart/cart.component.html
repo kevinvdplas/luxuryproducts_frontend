@@ -8,7 +8,7 @@
   <ul class="list-group">
     @for (item of productsInCart; track $index) {
     <li class="list-group-item">
-      <img src="{{ item.thumpnail }}" style="height: 64px; width: 64px" />
+      <img [src]="item.thumpnail" style="height: 64px; width: 64px" />
       {{ item.name }} | {{ item.price | currency : "EUR" }}
       <a (click)="removeProductFromCart($index)" class="btn btn-outline-danger">
         Remove

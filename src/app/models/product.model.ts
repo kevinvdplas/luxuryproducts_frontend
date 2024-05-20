@@ -17,7 +17,7 @@ export class Product {
     this.amount = amount;
   }
 
-  public get thumbnail(): string {
+  public get thumpnail(): string {
     return this._thumpnail;
   }
   public set thumpnail(value: string) {
