@@ -16,7 +16,7 @@
     </li>
     }
     <li class="list-group-item">
-      <p>Sub total: {{ calcTotalPrice() | currency : "EUR" }}</p>
+      <p>Sub total: {{ calculatePriceFromItems() - 5 | currency : "EUR" }}</p>
     </li>
   </ul>
   <br />
@@ -26,9 +26,9 @@
         @if (giftcardPrice) {
       <p>Giftcard price: €{{giftcardPrice}}</p>
         }
-      <p>Total price: {{ calcTotalPrice() + 5  | currency : "EUR" }}</p>
+      <p>Total price: {{ calculatePriceFromGiftcard(calculatePriceFromItems()) | currency : "EUR" }}</p>
     </li>
-      <form (submit)="useGiftcard($event)">
+      <form (submit)="useGiftcard()">
         <div class="form-group">
           <label for="giftcardCode">Giftcard</label>
           <input

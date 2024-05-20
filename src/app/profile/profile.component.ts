@@ -6,6 +6,7 @@ import {AuthService} from "../auth/auth.service";
 import {Router} from "@angular/router";
 import {Product} from "../models/product.model";
 import {Form, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-profile',
@@ -37,9 +38,27 @@ export class ProfileComponent implements OnInit {
 
     public addSaldoToGiftcard(code: string): void {
         let price = this.addSaldoForm.value.giftcardValue;
-        console.log(price);
-        this.giftcardService.addSaldoToGiftcard(code, price).subscribe(() => {
-            console.log('Saldo updated');
-        });
+
+        if (price > 0) {
+            Swal.fire({
+                title: 'Weet je het zeker?',
+                text: 'Wil je echt ' + price + ' euro aan saldo toevoegen aan deze giftcard?',
+                showCancelButton: true,
+                showConfirmButton: true,
+                confirmButtonText: 'Ja',
+                cancelButtonText: 'Nee',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire("Saldo toegevoegd!", "Het saldo is toegevoegd aan de giftcard", "success");
+                    this.giftcardService.addSaldoToGiftcard(code, price).subscribe(() => {
+                        console.log('Saldo updated');
+                    });
+                } else if (result.isDismissed) {
+                    Swal.fire("Saldo niet toegevoegd", "Het saldo is niet toegevoegd aan de giftcard", "error");
+                }
+            });
+        } else {
+            Swal.fire("Saldo niet toegevoegd", "Het saldo moet groter zijn dan 0", "error");
+        }
     }
 }

@@ -20,7 +20,6 @@ export class GiftcardService {
         let email = this.authService.getEmail();
         return this.http.get<Giftcard[]>(environment.base_url + '/giftcards/' + email);
     }
-
     public deactivateGiftcard(giftcard_id: number): Observable<any> {
         return this.http.put(environment.base_url + '/giftcards/deactivate/' + giftcard_id, {});
     }
@@ -33,8 +32,8 @@ export class GiftcardService {
         return this.http.get<Giftcard>(environment.base_url + '/giftcards/code/' + code);
     }
 
-    public updateSaldo(code: string, saldo: number): Observable<any> {
-        return this.http.put(environment.base_url + '/giftcards/updateSaldo/' + code, {saldo});
+    public updateSaldoFromOrder(code: string, price: number): Observable<any> {
+        return this.http.put(environment.base_url + '/giftcards/updateSaldoFromOrder/' + code, {price});
     }
 
     public addSaldoToGiftcard(code: string, price: number): Observable<any> {

@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../models/product.model';
 import { CartService } from '../Services/cart.service';
-import {CurrencyPipe, NgIf} from '@angular/common';
+import {CurrencyPipe} from '@angular/common';
 import { Order } from '../models/order.model';
 import { OrderService } from '../Services/order.service';
 import {GiftcardService} from "../Services/giftcard.service";
-import {FormsModule} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
-import {Giftcard} from "../models/giftcard.model";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CurrencyPipe, FormsModule],
+  imports: [CurrencyPipe, FormsModule, ReactiveFormsModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
@@ -20,7 +20,8 @@ export class CartComponent implements OnInit {
   public productsInCart: Product[];
   public giftcardCode: string;
   public giftcardPrice: number = 0;
-  public giftcardPriceAfterOrder: number;
+  public travelFee: number = 5;
+  public newGiftcardValue: number = 0;
 
   private order: Order = {
     products: [],
@@ -32,7 +33,8 @@ export class CartComponent implements OnInit {
     private cartService: CartService,
     private orderService: OrderService,
     private giftcardService: GiftcardService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -42,53 +44,77 @@ export class CartComponent implements OnInit {
     });
   }
 
-  public calcTotalPrice() {
-    let total_price = 0;
-    for (const product of this.productsInCart) {
-      total_price += product.price;
-    }
-    total_price -= this.giftcardPrice;
-    // console.log(this.giftcardPrice);
-    return total_price;
-  }
-
   public removeProductFromCart(product_index: number) {
     this.cartService.removeProductFromCart(product_index);
   }
 
-  public placeOrder() {
-    // console.log(this.productsInCart);
+  public calculatePriceFromItems(): number {
+    let total_price: number = 0;
 
-    this.order.products = this.productsInCart;
-    this.order.total_price = this.calcTotalPrice();
+    for (const product of this.productsInCart) {
+      total_price += product.price;
+    }
 
-    this.orderService.postOrder(this.order).subscribe();
-    alert('Thanks for your order!');
+    total_price += this.travelFee;
 
-    this.giftcardPriceAfterOrder = this.giftcardPrice - this.order.total_price;
-    this.giftcardPrice = this.giftcardPriceAfterOrder >= 0 ? this.giftcardPriceAfterOrder : 0;
+    if (total_price < 0) {
+        total_price = 0;
+    }
 
-    this.giftcardService.updateSaldo(this.giftcardCode, this.giftcardPrice).subscribe((giftcard: any) => {
-        console.log(giftcard);
-    });
+    this.newGiftcardValue = this.giftcardPrice - total_price;
 
-    this.cartService.removeAllProductsFromCart();
-    // this.router.navigateByUrl('/orders');
+    this.calculateNewGiftcardValue();
+    this.calculatePriceFromGiftcard(total_price);
+
+    return total_price;
   }
 
-  public useGiftcard(event: Event) {
-    event.preventDefault();
+  public calculatePriceFromGiftcard(total_price: number) {
+    total_price -= this.giftcardPrice;
+
+    if (total_price < 0) {
+      total_price = 0;
+    }
+
+    return total_price;
+  }
+
+  public calculateNewGiftcardValue() {
+    if (this.newGiftcardValue < 0) {
+      this.newGiftcardValue = 0;
+    }
+
+    return this.newGiftcardValue;
+  }
+
+  public placeOrder() {
+    let allProductsInCart = this.order.products = this.productsInCart;
+    this.order.total_price = this.calculatePriceFromGiftcard(this.calculatePriceFromItems());
+
+    if (allProductsInCart.length === 0) {
+      Swal.fire("Geen producten in winkelmand", "Voeg producten toe aan je winkelmand", "error")
+    } else {
+      this.orderService.postOrder(this.order).subscribe();
+      this.updateGiftcardPrice();
+      Swal.fire("Bestelling geplaatst!", "Je bestelling is geplaatst", "success");
+    }
+  }
+
+  public updateGiftcardPrice() {
+    this.giftcardService.updateSaldoFromOrder(this.giftcardCode, this.newGiftcardValue).subscribe();
+    this.cartService.removeAllProductsFromCart();
+  }
+
+  public useGiftcard() {
     this.giftcardService.getGiftcardByCode(this.giftcardCode).subscribe((giftcard: any) => {
-      if (giftcard.used) {
-        alert('This giftcard has already been used');
+      if (giftcard.used ) {
+        Swal.fire("Giftcard niet bruikbaar", "Deze giftcard is niet meer bruikbaar", "error");
+      } else if (giftcard.price <= 0) {
+        Swal.fire("Giftcard niet bruikbaar", "Deze giftcard heeft geen saldo", "error");
       } else {
         this.giftcardPrice = giftcard.price;
-        this.order.total_price = this.calcTotalPrice();
-        // console.log(this.giftcardPrice);
+        this.order.total_price = this.calculatePriceFromGiftcard(this.calculatePriceFromItems());
       }
     });
   }
-
-  protected readonly NgIf = NgIf;
-  protected readonly Giftcard = Giftcard;
 }
