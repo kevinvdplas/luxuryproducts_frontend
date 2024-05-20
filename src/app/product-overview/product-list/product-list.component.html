@@ -26,10 +26,12 @@
 
 <div class="products">
   @for (product of loadedProducts; track $index) {
-  <app-product
-    class="product"
-    [product]="product"
-    (addToCart)="addToCart($event)"
-  ></app-product>
+      @if (product.name !== "Giftcard") {
+          <app-product
+                  class="product"
+                  [product]="product"
+                  (addToCart)="addToCart($event)"
+          ></app-product>
+      }
   }
 </div>
