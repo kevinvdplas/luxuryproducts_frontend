@@ -5,9 +5,10 @@ import {CurrencyPipe} from '@angular/common';
 import { Order } from '../models/order.model';
 import { OrderService } from '../Services/order.service';
 import {GiftcardService} from "../Services/giftcard.service";
-import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {Router} from "@angular/router";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import Swal from "sweetalert2";
+import {Giftcard} from "../models/giftcard.model";
+import {NewGiftcardInfo} from "../models/newGiftcardInfo.model";
 
 @Component({
   selector: 'app-cart',
@@ -18,6 +19,8 @@ import Swal from "sweetalert2";
 })
 export class CartComponent implements OnInit {
   public productsInCart: Product[];
+  public giftcardsUsed: Giftcard[] = [];
+  public newGiftcardInfo: NewGiftcardInfo[] = [];
   public giftcardCode: string;
   public giftcardPrice: number = 0;
   public travelFee: number = 5;
@@ -32,9 +35,7 @@ export class CartComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private orderService: OrderService,
-    private giftcardService: GiftcardService,
-    private router: Router,
-    private fb: FormBuilder
+    private giftcardService: GiftcardService
   ) {}
 
   ngOnInit(): void {
@@ -46,45 +47,6 @@ export class CartComponent implements OnInit {
 
   public removeProductFromCart(product_index: number) {
     this.cartService.removeProductFromCart(product_index);
-  }
-
-  public calculatePriceFromItems(): number {
-    let total_price: number = 0;
-
-    for (const product of this.productsInCart) {
-      total_price += product.price;
-    }
-
-    total_price += this.travelFee;
-
-    if (total_price < 0) {
-        total_price = 0;
-    }
-
-    this.newGiftcardValue = this.giftcardPrice - total_price;
-
-    this.calculateNewGiftcardValue();
-    this.calculatePriceFromGiftcard(total_price);
-
-    return total_price;
-  }
-
-  public calculatePriceFromGiftcard(total_price: number) {
-    total_price -= this.giftcardPrice;
-
-    if (total_price < 0) {
-      total_price = 0;
-    }
-
-    return total_price;
-  }
-
-  public calculateNewGiftcardValue() {
-    if (this.newGiftcardValue < 0) {
-      this.newGiftcardValue = 0;
-    }
-
-    return this.newGiftcardValue;
   }
 
   public placeOrder() {
@@ -100,21 +62,76 @@ export class CartComponent implements OnInit {
     }
   }
 
-  public updateGiftcardPrice() {
-    this.giftcardService.updateSaldoFromOrder(this.giftcardCode, this.newGiftcardValue).subscribe();
-    this.cartService.removeAllProductsFromCart();
+  public addGiftcardToList() {
+    this.giftcardService.getGiftcardByCode(this.giftcardCode).subscribe((giftcard: any) => {
+      let listOfGiftcards = JSON.stringify(this.giftcardsUsed);
+      let currentGiftcard = JSON.stringify(giftcard);
+      let isGiftcardInList = listOfGiftcards.indexOf(currentGiftcard);
+
+      if (!giftcard) {
+        Swal.fire("Giftcard niet gevonden", "Deze giftcard is niet gevonden", "error");
+      }
+      else if (isGiftcardInList !== -1) {
+        Swal.fire("Giftcard al gebruikt", "Deze giftcard is al gebruikt", "error");
+      }
+      else if (giftcard.used) {
+        Swal.fire("Giftcard niet bruikbaar", "Deze giftcard is niet meer bruikbaar", "error");
+      }
+      else if (giftcard.price <= 0) {
+        Swal.fire("Giftcard niet bruikbaar", "Deze giftcard heeft geen saldo", "error");
+      }
+      else {
+        this.giftcardsUsed.push(giftcard);
+        this.calculatePriceFromItems();
+      }
+      this.calculatePriceFromItems();
+    });
   }
 
-  public useGiftcard() {
-    this.giftcardService.getGiftcardByCode(this.giftcardCode).subscribe((giftcard: any) => {
-      if (giftcard.used ) {
-        Swal.fire("Giftcard niet bruikbaar", "Deze giftcard is niet meer bruikbaar", "error");
-      } else if (giftcard.price <= 0) {
-        Swal.fire("Giftcard niet bruikbaar", "Deze giftcard heeft geen saldo", "error");
-      } else {
-        this.giftcardPrice = giftcard.price;
-        this.order.total_price = this.calculatePriceFromGiftcard(this.calculatePriceFromItems());
+  public removeGiftcardFromList(giftcard_index: number) {
+      this.giftcardsUsed.splice(giftcard_index, 1);
+  }
+
+  public calculatePriceFromItems() {
+    let total_price: number = 0;
+
+    for (const product of this.productsInCart) {
+      total_price += product.price;
+    }
+
+    total_price += this.travelFee;
+
+    this.calculateNewGiftcardValue(total_price);
+    this.calculatePriceFromGiftcard(total_price);
+
+    return total_price;
+  }
+
+  public calculateNewGiftcardValue(total_price: number) {
+    for (const giftcard of this.giftcardsUsed) {
+      let newGiftcardValue = giftcard.price - total_price;
+
+      if (newGiftcardValue < 0) {
+        newGiftcardValue = 0;
       }
-    });
+
+      this.newGiftcardInfo.push({giftcard_id: giftcard.giftcard_id, newValue: newGiftcardValue, giftcard_code: giftcard.code});
+    }
+  }
+
+  public calculatePriceFromGiftcard(total_price: number) {
+    for (const giftcard of this.giftcardsUsed) {
+      total_price -= giftcard.price;
+    }
+
+    return total_price;
+  }
+
+  public updateGiftcardPrice() {
+    for (const newGiftcard of this.newGiftcardInfo) {
+      this.giftcardService.updateSaldoFromOrder(newGiftcard.giftcard_code, newGiftcard.newValue).subscribe();
+    }
+
+    this.cartService.removeAllProductsFromCart();
   }
 }

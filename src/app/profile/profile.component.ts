@@ -2,10 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {GiftcardService} from "../Services/giftcard.service";
 import {Giftcard} from "../models/giftcard.model";
 import {NgForOf, NgIf} from "@angular/common";
-import {AuthService} from "../auth/auth.service";
-import {Router} from "@angular/router";
-import {Product} from "../models/product.model";
-import {Form, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import Swal from "sweetalert2";
 
 @Component({
@@ -20,11 +17,11 @@ import Swal from "sweetalert2";
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit{
     public giftcards: Giftcard[] = new Array<Giftcard>();
     public addSaldoForm: FormGroup;
 
-    constructor(private giftcardService: GiftcardService, private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {}
+    constructor(protected giftcardService: GiftcardService, protected formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
       this.giftcardService.getAllGiftcardsByUser().subscribe((giftcards: any) => {
@@ -60,5 +57,13 @@ export class ProfileComponent implements OnInit {
         } else {
             Swal.fire("Saldo niet toegevoegd", "Het saldo moet groter zijn dan 0", "error");
         }
+    }
+
+    public sortTableByGiftcardId(): void {
+        this.giftcards.sort((a, b) => a.giftcard_id - b.giftcard_id);
+    }
+
+    public sortTableByUserId(): void {
+        this.giftcards.sort((a, b) => a.userId - b.userId);
     }
 }

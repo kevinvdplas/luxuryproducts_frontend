@@ -1,67 +1,61 @@
 <div class="container">
-  <br />
-  <br />
-  <br />
-  @if (productsInCart.length == 0) {
-  <p>its a little empty here...</p>
-  }
-  <ul class="list-group">
-    @for (item of productsInCart; track $index) {
-    <li class="list-group-item">
-      <img [src]="item.thumpnail" style="height: 64px; width: 64px" />
-      {{ item.name }} | {{ item.price | currency : "EUR" }}
-      <a (click)="removeProductFromCart($index)" class="btn btn-outline-danger">
-        Remove
-      </a>
-    </li>
+    <br />
+    <br />
+    <br />
+    @if (productsInCart.length == 0) {
+        <p>its a little empty here...</p>
     }
-    <li class="list-group-item">
-      <p>Sub total: {{ calculatePriceFromItems() - 5 | currency : "EUR" }}</p>
-    </li>
-  </ul>
-  <br />
-  <ul class="list-group">
-    <li class="list-group-item">
-      <p>Travel fee: €5.00</p>
-        @if (giftcardPrice) {
-      <p>Giftcard price: €{{giftcardPrice}}</p>
+    <ul class="list-group">
+        @for (item of productsInCart; track $index) {
+            <li class="list-group-item">
+                <img [src]="item.thumpnail" style="height: 64px; width: 64px" />
+                {{ item.name }} | {{ item.price | currency : "EUR" }}
+                <a (click)="removeProductFromCart($index)" class="btn btn-outline-danger">Verwijder</a>
+            </li>
         }
-      <p>Total price: {{ calculatePriceFromGiftcard(calculatePriceFromItems()) | currency : "EUR" }}</p>
-    </li>
-      <form (submit)="useGiftcard()">
-        <div class="form-group">
-          <label for="giftcardCode">Giftcard</label>
-          <input
-            type="text"
-            class="form-control"
-            id="giftcardCode"
-            [(ngModel)]="giftcardCode"
-            name="giftcardCode"
-            placeholder="Enter giftcard"
-          />
-        </div>
-        <button type="submit" class="btn btn-primary">Use</button>
-      </form>
-  </ul>
-  <br />
-  <button (click)="placeOrder()" class="btn btn-primary">Order</button>
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
+        <li class="list-group-item">
+            <p>Sub total: {{ calculatePriceFromItems() - 5 | currency : "EUR" }}</p>
+        </li>
+    </ul>
+    <br />
+    <ul class="list-group">
+        <li class="list-group-item">
+            <p>Travel fee: €5.00</p>
+            @if (giftcardPrice) {
+                <p>Giftcard price: €{{giftcardPrice}}</p>
+            }
+            @for (giftcard of giftcardsUsed ; track $index) {
+                <p>Giftcard {{ $index + 1 }}: €{{ giftcard.price }}<a (click)="removeGiftcardFromList($index)" class="btn btn-outline-danger">  Verwijder</a></p>
+            }
+            <p>Total price: {{ calculatePriceFromGiftcard(calculatePriceFromItems()) | currency : "EUR" }}</p>
+        </li>
+        <form (submit)="addGiftcardToList()">
+            <div class="form-group">
+                <label for="giftcardCode">Giftcard</label>
+                <input type="text" class="form-control" id="giftcardCode" [(ngModel)]="giftcardCode" name="giftcardCode" placeholder="Enter giftcard"/>
+            </div>
+            <button type="submit" class="btn btn-primary">Use</button>
+        </form>
+    </ul>
+    <br />
+    <button (click)="placeOrder()" class="btn btn-primary">Order</button>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 </div>

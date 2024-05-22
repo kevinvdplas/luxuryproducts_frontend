@@ -1,28 +1,38 @@
 import {Component, OnInit} from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {ProfileComponent} from "../profile/profile.component";
+import {NgForOf, NgIf} from "@angular/common";
 import {Giftcard} from "../models/giftcard.model";
 import {GiftcardService} from "../Services/giftcard.service";
 import {AuthService} from "../auth/auth.service";
 import {Router} from "@angular/router";
+import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-admin',
   standalone: true,
     imports: [
-        NgForOf
+        NgForOf,
+        ReactiveFormsModule,
+        NgIf
     ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss'
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent extends ProfileComponent implements OnInit {
   public giftcards: Giftcard[] = new Array<Giftcard>();
+  public addSaldoForm: FormGroup;
 
-  constructor(private giftcardService: GiftcardService, private authService: AuthService, private router: Router) {}
+  constructor(protected giftcardService: GiftcardService, private authService: AuthService, private router: Router) {
+    super(giftcardService, new FormBuilder);
+    this.addSaldoForm = this.formBuilder.group({
+      giftcardValue: ['']
+    });
+  }
 
   ngOnInit(): void {
     this.giftcardService.getAllGiftcards().subscribe((giftcards: any) => {
-      // console.log(giftcards)
       this.giftcards = giftcards;
+      console.log(giftcards);
     });
     this.isAdmin()
   }
@@ -31,12 +41,14 @@ export class AdminComponent implements OnInit {
     this.giftcardService.deactivateGiftcard(giftcard_id).subscribe(() => {
       console.log('Giftcard deactivated');
     });
+    location.reload();
   }
 
   public activateGiftcard(giftcard_id: number): void {
     this.giftcardService.activateGiftcard(giftcard_id).subscribe(() => {
       console.log('Giftcard activated');
     });
+    location.reload();
   }
 
   public isAdmin(): void {
@@ -45,5 +57,9 @@ export class AdminComponent implements OnInit {
         this.router.navigate(['/']);
       }
     });
+  }
+
+  public addSaldoToGiftcard(code: string) {
+    super.addSaldoToGiftcard(code);
   }
 }

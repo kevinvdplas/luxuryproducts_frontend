@@ -46,6 +46,8 @@ export class AuthService {
 
   public logOut(): void {
     this.tokenService.removeToken();
+    localStorage.removeItem("email");
+    location.reload();
     this.$userIsLoggedIn.next(false);
   }
 

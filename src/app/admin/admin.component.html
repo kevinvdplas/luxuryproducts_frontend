@@ -1,25 +1,38 @@
-<table class="table">
-    <thead>
+<table class="table d-table mx-auto">
+    <thead class="bg-light">
     <tr>
-        <th scope="col">Giftcard ID</th>
-        <th scope="col">Gebruikers ID</th>
-        <th scope="col">Code</th>
-        <th scope="col">Prijs</th>
-        <th scope="col">Gebruikt</th>
-        <th scope="col">Deactiveer</th>
-        <th scope="col">Activeer</th>
+        <th
+            scope="col" class="text-center" (click)="sortTableByGiftcardId()">Giftcard ID
+        </th>
+        <th scope="col" class="text-center" (click)="sortTableByUserId()">Gebruikers ID</th>
+        <th scope="col" class="text-center">Code</th>
+        <th scope="col" class="text-center">Prijs</th>
+        <th scope="col" class="text-center">Gebruikt</th>
+        <th scope="col" class="text-center">Deactiveer</th>
+        <th scope="col" class="text-center">Activeer</th>
+        <th scope="col" class="text-center">Opwaarderen</th>
     </tr>
     </thead>
     <tbody>
     <ng-container *ngFor="let giftcard of giftcards">
         <tr>
-            <td>{{giftcard.giftcard_id}}</td>
-            <td>{{giftcard.userId}}</td>
-            <td>{{giftcard.code}}</td>
-            <td>{{giftcard.price}}</td>
-            <td>{{giftcard.used}}</td>
-            <td><button (click)="deactivateGiftcard(giftcard.giftcard_id)" [disabled]="giftcard.used">Deactiveer</button></td>
-            <td><button (click)="activateGiftcard(giftcard.giftcard_id)" [disabled]="!giftcard.used">Activeer</button></td>
+            <td class="text-center fw-semibold align-middle">{{giftcard.giftcard_id}}</td>
+            <td class="text-center fw-semibold align-middle">{{giftcard.userId}}</td>
+            <td class="text-center align-middle">{{giftcard.code}}</td>
+            <td class="text-center align-middle">€{{giftcard.price}}</td>
+            <td class="text-center align-middle">{{giftcard.used}}</td>
+            <td class="text-center align-middle"><button (click)="deactivateGiftcard(giftcard.giftcard_id)" [disabled]="giftcard.used" class="btn btn-link text-decoration-none">Deactiveer</button></td>
+            <td class="text-center align-middle"><button (click)="activateGiftcard(giftcard.giftcard_id)" [disabled]="!giftcard.used" class="btn btn-link text-decoration-none">Activeer</button></td>
+            <td class="text-center align-middle">
+                <form [formGroup]="addSaldoForm" (ngSubmit)="addSaldoToGiftcard(giftcard.code)">
+                    <div class="input-group mx-auto w-50 justify-content-center text-center">
+                        <input type="text" class="form-control w-25 mx-auto m-0" name="giftcardValue" id="giftcardValue" formControlName="giftcardValue">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-primary">Opwaarderen</button>
+                        </div>
+                    </div>
+                </form>
+            </td>
         </tr>
     </ng-container>
     </tbody>

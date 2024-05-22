@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Product } from '../../../models/product.model';
 import { CurrencyPipe } from '@angular/common';
 import { AuthService } from '../../../auth/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -17,7 +16,7 @@ export class ProductComponent implements OnInit {
 
   public isLoggedIn: boolean;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.$userIsLoggedIn.subscribe(
