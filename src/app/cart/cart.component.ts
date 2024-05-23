@@ -24,7 +24,6 @@ export class CartComponent implements OnInit {
   public giftcardCode: string;
   public giftcardPrice: number = 0;
   public travelFee: number = 5;
-  public newGiftcardValue: number = 0;
 
   private order: Order = {
     products: [],
@@ -90,6 +89,7 @@ export class CartComponent implements OnInit {
 
   public removeGiftcardFromList(giftcard_index: number) {
       this.giftcardsUsed.splice(giftcard_index, 1);
+      this.newGiftcardInfo.splice(giftcard_index, 1);
   }
 
   public calculatePriceFromItems() {
@@ -101,13 +101,15 @@ export class CartComponent implements OnInit {
 
     total_price += this.travelFee;
 
-    this.calculateNewGiftcardValue(total_price);
+    this.calculateNewGiftcardValue(total_price, null);
     this.calculatePriceFromGiftcard(total_price);
 
     return total_price;
   }
 
-  public calculateNewGiftcardValue(total_price: number) {
+  public calculateNewGiftcardValue(total_price: number, giftcard_index: number) {
+    this.newGiftcardInfo = [];
+
     for (const giftcard of this.giftcardsUsed) {
       let newGiftcardValue = giftcard.price - total_price;
 
@@ -115,7 +117,7 @@ export class CartComponent implements OnInit {
         newGiftcardValue = 0;
       }
 
-      this.newGiftcardInfo.push({giftcard_id: giftcard.giftcard_id, newValue: newGiftcardValue, giftcard_code: giftcard.code});
+      this.newGiftcardInfo.push({giftcard_index: giftcard_index, giftcard_id: giftcard.giftcard_id, newValue: newGiftcardValue, giftcard_code: giftcard.code});
     }
   }
 
