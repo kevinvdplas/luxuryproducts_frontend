@@ -50,12 +50,22 @@ export class CartComponent implements OnInit {
 
   public placeOrder() {
     let allProductsInCart = this.order.products = this.productsInCart;
+
+    let allGiftcardsUsed = [];
+    this.newGiftcardInfo.forEach(giftcard => {
+      allGiftcardsUsed.push(giftcard.giftcard_id);
+    })
+
     this.order.total_price = this.calculatePriceFromGiftcard(this.calculatePriceFromItems());
 
     if (allProductsInCart.length === 0) {
       Swal.fire("Geen producten in winkelmand", "Voeg producten toe aan je winkelmand", "error")
     } else {
-      this.orderService.postOrder(this.order).subscribe();
+      let OrderRequest = {
+        order: this.order,
+        giftcards: allGiftcardsUsed
+      }
+      this.orderService.postOrder(OrderRequest).subscribe();
       this.updateGiftcardPrice();
       Swal.fire("Bestelling geplaatst!", "Je bestelling is geplaatst", "success");
     }

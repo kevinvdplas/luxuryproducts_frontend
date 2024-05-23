@@ -11,8 +11,8 @@ import { environment } from '../../environments/environment.development';
 export class OrderService {
   constructor(private http: HttpClient) {}
 
-  public postOrder(order: Order): Observable<Order> {
-    return this.http.post<Order>(environment.base_url + '/orders', order);
+  public postOrder(OrderRequest: {order: Order, giftcards: any[]}): Observable<Order> {
+    return this.http.post<Order>(environment.base_url + '/orders', OrderRequest);
   }
 
   public getOrdersFromCurrentUser(): Observable<Order[]> {
