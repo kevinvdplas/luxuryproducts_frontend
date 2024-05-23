@@ -18,4 +18,8 @@ export class OrderService {
   public getOrdersFromCurrentUser(): Observable<Order[]> {
     return this.http.get<Order[]>(environment.base_url + '/orders');
   }
+
+  public getOrderFromGiftcard(giftcard_id: number): Observable<Order[]> {
+    return this.http.get<Order[]>(environment.base_url + '/order-giftcard-usage/' + giftcard_id);
+  }
 }

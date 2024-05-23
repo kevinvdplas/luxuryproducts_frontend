@@ -4,17 +4,18 @@ import {NgForOf, NgIf} from "@angular/common";
 import {Giftcard} from "../models/giftcard.model";
 import {GiftcardService} from "../Services/giftcard.service";
 import {AuthService} from "../auth/auth.service";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-    imports: [
-        NgForOf,
-        ReactiveFormsModule,
-        NgIf
-    ],
+  imports: [
+    NgForOf,
+    ReactiveFormsModule,
+    NgIf,
+    RouterLink
+  ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss'
 })

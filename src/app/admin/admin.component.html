@@ -9,6 +9,7 @@
         <th scope="col" class="text-center">Deactiveer</th>
         <th scope="col" class="text-center">Activeer</th>
         <th scope="col" class="text-center">Opwaarderen</th>
+        <th scope="col" class="text-center">Geschiedenis</th>
     </tr>
     </thead>
     <tbody>
@@ -30,6 +31,13 @@
                         </div>
                     </div>
                 </form>
+            </td>
+            <td class="text-center align-middle">
+                <div class="input-group mx-auto w-50 justify-content-center text-center">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-outline-warning"><a style="text-decoration: none" [routerLink]="['/giftcardhistory', giftcard.giftcard_id]">Geschiedenis</a></button>
+                    </div>
+                </div>
             </td>
         </tr>
     </ng-container>

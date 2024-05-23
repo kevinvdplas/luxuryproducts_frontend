@@ -9,6 +9,7 @@ import { OrdersComponent } from './orders/orders.component';
 import {ProfileComponent} from "./profile/profile.component";
 import {AdminComponent} from "./admin/admin.component";
 import {GiftcardOverviewComponent} from "./giftcard-overview/giftcard-overview.component";
+import {GiftcardHistoryComponent} from "./giftcard-history/giftcard-history.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent, canActivate: [authGuard] },
   { path: 'orders', component: OrdersComponent, canActivate: [authGuard]},
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
-  { path: 'admin', component: AdminComponent, canActivate: [authGuard]}
+  { path: 'admin', component: AdminComponent, canActivate: [authGuard]},
+  { path: 'giftcardhistory/:id', component: GiftcardHistoryComponent, canActivate: [authGuard]}
 ];
