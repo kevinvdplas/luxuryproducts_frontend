@@ -1,22 +1,26 @@
-<table class="table">
-    <thead>
+<table class="table d-table mx-auto">
+    <thead class="bg-light">
     <tr>
-        <th scope="col">Code</th>
-        <th scope="col">Prijs</th>
-        <th scope="col">Gebruikt</th>
-        <th scope="col">Saldo Toevoegen</th>
+        <th scope="col" class="text-center">Code</th>
+        <th scope="col" class="text-center">Prijs</th>
+        <th scope="col" class="text-center">Ongeldig</th>
+        <th scope="col" class="text-center">Saldo Toevoegen</th>
     </tr>
     </thead>
     <tbody>
     <ng-container *ngFor="let giftcard of giftcards">
         <tr>
-            <td>{{giftcard.code}}</td>
-            <td>{{giftcard.price}}</td>
-            <td>{{giftcard.used}}</td>
-            <td>
+            <td class="text-center align-middle">{{giftcard.code}}</td>
+            <td class="text-center align-middle">{{giftcard.price}}</td>
+            <td class="text-center align-middle">{{giftcard.used}}</td>
+            <td class="text-center align-middle">
                 <form [formGroup]="addSaldoForm" (ngSubmit)="addSaldoToGiftcard(giftcard.code)">
-                    <input name="giftcardValue" id="giftcardValue" formControlName="giftcardValue">
-                    <button type="submit">Opwaarderen</button>
+                    <div class="input-group mx-auto w-50 justify-content-center text-center">
+                        <input type="text" class="form-control w-25 mx-auto m-0" name="giftcardValue" id="giftcardValue" formControlName="giftcardValue">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-primary">Opwaarderen</button>
+                        </div>
+                    </div>
                 </form>
             </td>
         </tr>
