@@ -1,7 +1,7 @@
 <div class="header">
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h1 class="display-4"><strong>SwordsNStuff</strong></h1>
+      <h1 class="display-4" id="display-4"><strong>SwordsNStuff</strong></h1>
       <p class="lead">THE best place to get your swords!</p>
     </div>
   </div>
@@ -11,7 +11,7 @@
     <div class="navbar" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-item nav-link yello" [routerLink]="''"><b>Home</b></a>
-        <a class="nav-item nav-link yello" [routerLink]="'products'"><b>Products</b></a>
+        <a class="nav-item nav-link yello" id="productspage" [routerLink]="'products'"><b>Products</b></a>
         <a class="nav-item nav-link yello" [routerLink]="'giftcards'"><b>Giftcards</b></a>
         <a class="nav-item nav-link yello" [routerLink]="'cart'" *ngIf="userIsLoggedIn"><b>My Cart ({{ productsInCart }})</b></a>
         <a class="nav-item nav-link yello" [routerLink]="'orders'" *ngIf="userIsLoggedIn"><b>My Orders</b></a>

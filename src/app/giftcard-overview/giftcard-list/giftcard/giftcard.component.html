@@ -6,10 +6,10 @@
         <h5 class="card-title">{{ product.name }}</h5>
         <hr />
         <p>{{ product.price | currency : "EUR" }}</p>
-        @if (isLoggedIn) {
+<!--        @if (isLoggedIn) {-->
             <a class="btn btn-primary" (click)="onBuyProduct()">add to cart</a>
-        } @if (!isLoggedIn) {
+<!--        } @if (!isLoggedIn) {-->
         <a class="btn btn-primary disabled">login to buy</a>
-    }
+<!--    }-->
     </div>
 </div>

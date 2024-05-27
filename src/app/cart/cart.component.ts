@@ -9,6 +9,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import Swal from "sweetalert2";
 import {Giftcard} from "../models/giftcard.model";
 import {NewGiftcardInfo} from "../models/newGiftcardInfo.model";
+import {catchError, of} from "rxjs";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-cart',
@@ -72,15 +74,20 @@ export class CartComponent implements OnInit {
   }
 
   public addGiftcardToList() {
-    this.giftcardService.getGiftcardByCode(this.giftcardCode).subscribe((giftcard: any) => {
+    this.giftcardService.getGiftcardByCode(this.giftcardCode).pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 404) {
+            Swal.fire("Giftcard niet gevonden", "Deze giftcard is niet gevonden", "error");
+          }
+          // Return an empty observable so the subscribe method doesn't throw an error
+          return of(null);
+        })
+    ).subscribe((giftcard: any) => {
       let listOfGiftcards = JSON.stringify(this.giftcardsUsed);
       let currentGiftcard = JSON.stringify(giftcard);
       let isGiftcardInList = listOfGiftcards.indexOf(currentGiftcard);
 
-      if (!giftcard) {
-        Swal.fire("Giftcard niet gevonden", "Deze giftcard is niet gevonden", "error");
-      }
-      else if (isGiftcardInList !== -1) {
+      if (isGiftcardInList !== -1) {
         Swal.fire("Giftcard al gebruikt", "Deze giftcard is al gebruikt", "error");
       }
       else if (giftcard.used) {

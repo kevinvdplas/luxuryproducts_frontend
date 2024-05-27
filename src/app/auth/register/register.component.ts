@@ -32,11 +32,13 @@ export class RegisterComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    this.authService
-      .register(this.registerForm.value)
-      .subscribe((authResponse: { token: string }) => {
+    if (this.registerForm.get('password').value == this.registerForm.get('repeated_password').value) {
+      this.authService.register(this.registerForm.value).subscribe((authResponse: { token: string }) => {
         this.router.navigate(['']);
         console.log(authResponse.token, 'User registered');
       });
+    } else {
+      alert('Passwords do not match')
+    }
   }
 }
